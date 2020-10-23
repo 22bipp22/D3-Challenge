@@ -1,53 +1,66 @@
-d3.csv('/assets/data/data.csv').then(data => {
+d3.csv('assets/data/data.csv').then(data => {
     console.log(data)
 
-    const svgWidth = 960
-    const svgHeight = 500
+    //Set up the chart    
+    let svgWidth = 960;
+    let svgHeight = 500;
 
-    const margin = {
+    let margin = {
         top: 20,
         right: 40,
         bottom: 80,
         left: 100
-    }
+    };
 
-    const width = svgWidth - margin.left - margin.right
-    const height = svgHeight - margin.top - margin.bottom
+    let width = svgWidth - margin.left - margin.right
+    let height = svgHeight - margin.top - margin.bottom
 
-    const chart = d3
+    let svg = d3
         .select('#scatter')
         .append('svg')
         .attr('width', svgWidth)
         .attr('height', svgHeight)
 
-    const chartGroup = chart
-        .append('g')
+    let chartGroup = svg.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-    const xAxis = 'State'
-    const yAxis = 'Poverty'
+    // let xAxis = 'State'
+    // let yAxis = 'Poverty'
 
-    const povertyData = data.map(entry => entry.poverty)
-    const stateAbbr = data.map(entry => entry.abbr)
+    let povertyData = data.map(entry => entry.poverty)
+    let stateAbbr = data.map(entry => entry.abbr)
+    let healthCare = data.map(entry => entry.healthcare)
 
     console.log(povertyData)
     console.log(stateAbbr)
+    console.log(healthCare)
 
-    const x = d3.scaleLinear()
-        .domain([0, stateAbbr.length])
+    let xLinearScale = d3.scaleLinear()
+        .domain(d3.extent(povertyData))
         .range([0, width])
 
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(povertyData)])
+    let yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(healthCare)])
         .range([height, 0])
 
-    chartGroup.append('g')
-        .selectAll('dot')
+    let bottomAxis = d3.axisBottom(xLinearScale);
+    let leftAxis = d3.axisLeft(yLinearScale);
+
+    let xAxis = chartGroup.append("g")
+        .classed("x-axis", true)
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis);
+
+    chartGroup.append("g")
+        .call(leftAxis);
+
+    let circlesGroup = chartGroup.selectAll("circle")
+        // .selectAll('dot')
         .data(data)
         .enter()
         .append('circle')
-            .attr('cx', abbr)
-            .attr('cy', povertyData)
+            .attr('cx', d => xLinearScale(d[stateAbbr]))
+            .attr('cy', d => yLinearScale(d[povertyData]))
             .attr('r', 2.0)
             .style('fill', '#000000')
             
