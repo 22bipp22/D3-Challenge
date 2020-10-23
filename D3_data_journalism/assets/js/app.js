@@ -42,7 +42,7 @@ d3.csv('assets/data/data.csv').then(data => {
 
     //Create scales
     let xLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.poverty)])
+        .domain(d3.extent(data, d => d.poverty))
         .range([0, width])
 
     let yLinearScale = d3.scaleLinear()
@@ -65,16 +65,16 @@ d3.csv('assets/data/data.csv').then(data => {
         .call(leftAxis);
 
     // line generator
-    let line = d3.line()
-        .x(d => xLinearScale(d.poverty))
-        .y(d => yLinearScale(d.healthcare));
+    // let line = d3.line()
+    //     .x(d => xLinearScale(d.poverty))
+    //     .y(d => yLinearScale(d.healthcare));
 
-    // create path
-    chartGroup.append("path")
-        .data([data])
-        .attr("d", line)
-        .attr("fill", "none")
-        .attr("stroke", "blue");
+    // // create path
+    // chartGroup.append("path")
+    //     .data([data])
+    //     .attr("d", line)
+    //     .attr("fill", "none")
+    //     .attr("stroke", "blue");
 
 
     let circlesGroup = chartGroup.selectAll("circle")
@@ -84,7 +84,20 @@ d3.csv('assets/data/data.csv').then(data => {
         .append('circle')
             .attr('cx', d => xLinearScale(d.poverty))
             .attr('cy', d => yLinearScale(d.healthcare))
-            .attr('r', 2.0)
-            .style('fill', '#000000')
+            .attr('r', 10)
+            .style('fill', 'blue')
+            .attr('opacity', "50%")
+            .attr('text-anchor', 'middle')
+            .attr('text', d => d.abbr)
+            
+            
+        //     let texts = circlesGroup.selectAll('text')
+        // .attr('text-anchor', 'middle')
+        // .attr('alignment-baseline', 'middle')
+        // .style('font-size', d => d.radius * 0.4 + 'px')
+        // .attr('fill-opacity', 0)
+        // .attr('fill', 'white')
+        // .text(d => d.abbr)
+            
             
 }).catch(err => console.log(err))
