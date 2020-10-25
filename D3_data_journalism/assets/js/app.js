@@ -40,14 +40,6 @@ function makeResponsive() {
             data.healthcare = +data.healthcare;
         }); 
 
-        // let povertyData = data.map(entry => entry.poverty)
-        // let stateAbbr = data.map(entry => entry.abbr)
-        // let healthCare = data.map(entry => entry.healthcare)
-
-        // console.log(povertyData)
-        // console.log(stateAbbr)
-        // console.log(healthCare)
-
         //Create scales
         let xLinearScale = d3.scaleLinear()
             .domain(d3.extent(data, d => d.poverty))
@@ -60,21 +52,16 @@ function makeResponsive() {
         let bottomAxis = d3.axisBottom(xLinearScale);
         let leftAxis = d3.axisLeft(yLinearScale);
 
-        // let xAxis = chartGroup.append("g")
-        //     .classed("x-axis", true)
-        //     .attr("transform", `translate(0, ${height})`)
-        //     .call(bottomAxis);
-
         chartGroup.append("g")
             .attr("transform", `translate(0, ${height})`)
             .call(bottomAxis);
 
         chartGroup.append("g")
             .call(leftAxis);
+       
 
-
+       //My code that works
         let circlesGroup = chartGroup.selectAll("circle")
-            // .selectAll('dot')
             .data(data)
             .enter()
             .append('circle')
@@ -85,19 +72,19 @@ function makeResponsive() {
                 .attr('opacity', "50%")
                 .attr('text-anchor', 'middle')
                 .attr('text', d => d.abbr)
+
                 
-                
-            //     let texts = circlesGroup.selectAll('text')
-            // .attr('text-anchor', 'middle')
-            // .attr('alignment-baseline', 'middle')
-            // .style('font-size', d => d.radius * 0.4 + 'px')
-            // .attr('fill-opacity', 0)
-            // .attr('fill', 'white')
-            // .text(d => d.abbr)
+        circlesGroup.append("g")
+
+        circlesGroup.append('text')
+            .attr('text-anchor', 'middle')
+            .text(d => {d.abbr})
+        
                 
                 
     }).catch(err => console.log(err))
 };
+
 makeResponsive();
 
 d3.select(window).on("resize", makeResponsive);
