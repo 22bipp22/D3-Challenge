@@ -29,12 +29,11 @@ function makeResponsive() {
             .attr('width', svgWidth)
             .attr('height', svgHeight)
 
+        //set the chart inside the margins
         let chartGroup = svg.append('g')
-            .attr('transform', `translate(${margin.left}, ${margin.top})`)
+        .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-        // let xAxis = 'State'
-        // let yAxis = 'Poverty'
-
+        //make the data numeric
         data.forEach(function(data) {
             data.poverty = +data.poverty;
             data.healthcare = +data.healthcare;
@@ -59,48 +58,51 @@ function makeResponsive() {
         chartGroup.append("g")
             .call(leftAxis);
 
+        //Set up the x axis label
         chartGroup.append('text')
         //position the text
-        // center
-        .attr('transform', `translate(${width / 2}, ${height + margin.top + height/10 })`)
+        // center and below bottom axis
+        .attr('transform', `translate(${width / 2}, ${height + margin.bottom})`)
         .attr("text-anchor", "middle")
-        .attr('font-size', width/12)
+        //make font size responsive to window size
+        .attr('font-size', width/15)
         .attr('fill', 'dodgerblue')
         .text('In Poverty (%)');
 
+        //Set up the y axis label 
+        //position text left and centered vertically
         chartGroup.append('text')
-        .attr('transform', `translate(${height/2 - margin.bottom - height/3}, ${width/2} ) rotate(270)`)
+        .attr('transform', `translate(${0 - margin.left + 25}, ${height/2} ) rotate(270)`)
         .attr("text-anchor", "middle")
-        .attr('font-size', height/12)
+        //make font size responsive to window size
+        .attr('font-size', height/10)
         .attr('rotation', '90')
         .attr('fill', 'dodgerblue')
         .text('Lacks Healthcare (%)');
        
 
-       let circlesGroup = chartGroup.selectAll('g')
+       //create a circles group
+        let circlesGroup = chartGroup.selectAll('g')
             .data(data)
             .enter()
             .append("g")
         
+        //append the circles onto the chart
         circlesGroup.append("circle")
-                // .data(data)
-                // .enter()
-                // .append('circle')
-                    .attr('cx', d => xLinearScale(d.poverty))
-                    .attr('cy', d => yLinearScale(d.healthcare))
-                    .attr('r', 10)
-                    .style('fill', 'blue')
-                    .attr('opacity', "50%")
-
+            .attr('cx', d => xLinearScale(d.poverty))
+            .attr('cy', d => yLinearScale(d.healthcare))
+            .attr('r', 10)
+            .style('fill', 'blue')
+            .attr('opacity', "50%")
+        
+        //append the state abbreviation onto the circles
         circlesGroup.append('text') 
             .html(function(d) {return d.abbr})
             .attr('opacity', ".75")
             .attr('font-size', "8px")
             .attr("x", d => xLinearScale(d.poverty)-5)
             .attr("y", d => yLinearScale(d.healthcare)+3)
-        
-
-                
+            
                 
     }).catch(err => console.log(err))
 };
