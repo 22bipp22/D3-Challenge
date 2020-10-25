@@ -43,6 +43,7 @@ function makeResponsive() {
         let xLinearScale = d3.scaleLinear()
             .domain([d3.min(data, d => d.poverty - 1), d3.max(data, d => d.poverty)])
             .range([0, width])
+            
 
         let yLinearScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d.healthcare)])
@@ -65,7 +66,7 @@ function makeResponsive() {
         .attr('transform', `translate(${width / 2}, ${height + margin.bottom})`)
         .attr("text-anchor", "middle")
         //make font size responsive to window size
-        .attr('font-size', width/15)
+        .attr('font-size', width/20)
         .attr('fill', 'dodgerblue')
         .text('In Poverty (%)');
 
@@ -75,7 +76,7 @@ function makeResponsive() {
         .attr('transform', `translate(${0 - margin.left + 25}, ${height/2} ) rotate(270)`)
         .attr("text-anchor", "middle")
         //make font size responsive to window size
-        .attr('font-size', height/10)
+        .attr('font-size', height/20)
         .attr('rotation', '90')
         .attr('fill', 'dodgerblue')
         .text('Lacks Healthcare (%)');
