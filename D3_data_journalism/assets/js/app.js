@@ -42,7 +42,7 @@ function makeResponsive() {
 
         //Create scales
         let xLinearScale = d3.scaleLinear()
-            .domain(d3.extent(data, d => d.poverty))
+            .domain([d3.min(data, d => d.poverty - 1), d3.max(data, d => d.poverty)])
             .range([0, width])
 
         let yLinearScale = d3.scaleLinear()
@@ -58,28 +58,51 @@ function makeResponsive() {
 
         chartGroup.append("g")
             .call(leftAxis);
+
+        chartGroup.append('text')
+        //position the text
+        // center
+        .attr('transform', `translate(${width / 2}, ${height + margin.top + 20 })`)
+        .attr("text-anchor", "middle")
+        .attr('font-size', '16px')
+        .attr('fill', 'dodgerblue')
+        .text('In Poverty (%)');
+
+        chartGroup.append('text')
+        .attr('transform', `translate(${margin.bottom -80}, ${width/2 -100} ) rotate(270)`)
+        .attr("text-anchor", "middle")
+        .attr('font-size', '16px')
+        .attr('rotation', '90')
+        .attr('fill', 'dodgerblue')
+        .text('Lacks Healthcare (%)');
        
 
-       //My code that works
-        let circlesGroup = chartGroup.selectAll("circle")
+       let g = chartGroup.selectAll('g')
             .data(data)
             .enter()
-            .append('circle')
-                .attr('cx', d => xLinearScale(d.poverty))
-                .attr('cy', d => yLinearScale(d.healthcare))
-                .attr('r', 10)
-                .style('fill', 'blue')
-                .attr('opacity', "50%")
-                .attr('text-anchor', 'middle')
-                .attr('text', d => d.abbr)
-
-                
-        circlesGroup.append("g")
-
-        circlesGroup.append('text')
-            .attr('text-anchor', 'middle')
-            .text(d => {d.abbr})
+            .append("g")
+            // .attr("transform", function(d) {
+            //     return "translate(" + xLinearScale(d.poverty), yLinearScale(d.healthcare) + ")"
+            // })
         
+        g.append("circle")
+                // .data(data)
+                // .enter()
+                // .append('circle')
+                    .attr('cx', d => xLinearScale(d.poverty))
+                    .attr('cy', d => yLinearScale(d.healthcare))
+                    .attr('r', 10)
+                    .style('fill', 'blue')
+                    .attr('opacity', "50%")
+
+        g.append('text') 
+            .html(function(d) {return d.abbr})
+            .attr('opacity', ".75")
+            .attr('font-size', "8px")
+            .attr("x", d => xLinearScale(d.poverty)-5)
+            .attr("y", d => yLinearScale(d.healthcare)+3)
+        
+
                 
                 
     }).catch(err => console.log(err))
