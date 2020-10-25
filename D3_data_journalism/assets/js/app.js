@@ -62,30 +62,27 @@ function makeResponsive() {
         chartGroup.append('text')
         //position the text
         // center
-        .attr('transform', `translate(${width / 2}, ${height + margin.top + 20 })`)
+        .attr('transform', `translate(${width / 2}, ${height + margin.top + height/10 })`)
         .attr("text-anchor", "middle")
-        .attr('font-size', '16px')
+        .attr('font-size', width/12)
         .attr('fill', 'dodgerblue')
         .text('In Poverty (%)');
 
         chartGroup.append('text')
-        .attr('transform', `translate(${margin.bottom -80}, ${width/2 -100} ) rotate(270)`)
+        .attr('transform', `translate(${height/2 - margin.bottom - height/3}, ${width/2} ) rotate(270)`)
         .attr("text-anchor", "middle")
-        .attr('font-size', '16px')
+        .attr('font-size', height/12)
         .attr('rotation', '90')
         .attr('fill', 'dodgerblue')
         .text('Lacks Healthcare (%)');
        
 
-       let g = chartGroup.selectAll('g')
+       let circlesGroup = chartGroup.selectAll('g')
             .data(data)
             .enter()
             .append("g")
-            // .attr("transform", function(d) {
-            //     return "translate(" + xLinearScale(d.poverty), yLinearScale(d.healthcare) + ")"
-            // })
         
-        g.append("circle")
+        circlesGroup.append("circle")
                 // .data(data)
                 // .enter()
                 // .append('circle')
@@ -95,7 +92,7 @@ function makeResponsive() {
                     .style('fill', 'blue')
                     .attr('opacity', "50%")
 
-        g.append('text') 
+        circlesGroup.append('text') 
             .html(function(d) {return d.abbr})
             .attr('opacity', ".75")
             .attr('font-size', "8px")
