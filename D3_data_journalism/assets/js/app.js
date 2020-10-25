@@ -64,18 +64,6 @@ d3.csv('assets/data/data.csv').then(data => {
     chartGroup.append("g")
         .call(leftAxis);
 
-    // line generator
-    // let line = d3.line()
-    //     .x(d => xLinearScale(d.poverty))
-    //     .y(d => yLinearScale(d.healthcare));
-
-    // // create path
-    // chartGroup.append("path")
-    //     .data([data])
-    //     .attr("d", line)
-    //     .attr("fill", "none")
-    //     .attr("stroke", "blue");
-
 
     let circlesGroup = chartGroup.selectAll("circle")
         // .selectAll('dot')
